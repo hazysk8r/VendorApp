@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".login.SignupActivity">
+
+    <ImageView
+        android:id="@+id/login_TruckImage"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        app:srcCompat="@drawable/bakery_truck_logo" />
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie"
+        app:lottie_autoPlay="true"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        app:lottie_rawRes="@raw/splash"
+        app:lottie_loop="true" />
+
+    <TextView
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:textSize="16sp"
+        android:text="FoodTrucker에 푸드트럭 등록하기 위해서는 양식을 다운받고 작성 후 아래 이메일로 제출하셔야 합니다."
+        android:fontFamily="@font/myfont2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/activity_email_copy_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이메일 주소 복사"
+        android:fontFamily="@font/myfont3"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="#00B2EE" />
+
+    <Button
+        android:id="@+id/activity_signup_download_button"
+        android:layout_width="328dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/button_ripple"
+        android:text="등록 양식 다운로드"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
+</LinearLayout>

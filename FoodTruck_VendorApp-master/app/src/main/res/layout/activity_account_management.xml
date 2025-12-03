@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".account.AccountManagementActivity"
+    android:gravity="center_horizontal">
+    <TextView
+        android:id="@+id/account_manager_textView"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="20dp"
+        android:text="계정 정보"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/myfont2"/>
+
+    <TextView
+        android:id="@+id/account_manager_textView2"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="이메일을 제외한 계정 정보를 변경하실 수 있습니다."
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/myfont3"/>
+
+    <TextView
+        android:id="@+id/account_manager_email"
+        android:layout_width="320dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/signup_textbox"
+        android:drawableLeft="@drawable/email_icon"
+        android:drawablePadding="15dp"
+        android:ems="10"
+        android:padding="12sp" />
+
+    <EditText
+        android:id="@+id/account_manager_name"
+        android:layout_width="320dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/signup_textbox"
+        android:drawableLeft="@drawable/user_account"
+        android:drawablePadding="15dp"
+        android:ems="10"
+        android:hint="상호명"
+        android:inputType="textEmailAddress"
+        android:padding="12sp" />
+
+    <EditText
+        android:id="@+id/account_manager_password"
+        android:layout_width="320dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/signup_textbox"
+        android:drawableLeft="@drawable/login_key"
+        android:drawablePadding="15dp"
+        android:ems="10"
+        android:hint="패스워드"
+        android:inputType="textPassword"
+        android:padding="12sp" />
+
+    <EditText
+        android:id="@+id/account_manager_phoneNumber"
+        android:layout_width="320dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/signup_textbox"
+        android:drawableLeft="@drawable/ic_baseline_local_phone_24"
+        android:drawablePadding="15dp"
+        android:ems="10"
+        android:hint="전화번호"
+        android:maxLength="13"
+        android:inputType="phone"
+        android:padding="12sp" />
+
+    <Button
+        android:id="@+id/account_change_button"
+        android:layout_width="328dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/button_ripple"
+        android:text="계정 정보 변경"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
+
+</LinearLayout>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="design_bottom_navigation_text_size" tools:override="true">7sp</dimen>
+    <dimen name="design_bottom_navigation_active_text_size" tools:override="true">13sp</dimen>
+    <dimen name="design_bottom_navigation_height" tools:override="true">55dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="MD_top_margin">10dp</dimen>
+    <dimen name="MD_allow_size">35dp</dimen>
+</resources>
