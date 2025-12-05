@@ -35,6 +35,8 @@ public class ApproveOrderFragment extends Fragment {
     //파이어베이스 인증
     private FirebaseUser user;
     //StoreAccount
+    private ValueEventListener orderListener; // 리스너를 변수로 저장해둬야 나중에 뗄 수 있음
+    private Query query; // 쿼리 객체
     private StoreAccount myAccount;
     ArrayList<Order_history> orderHistoryList;
     //수락대기중인 주문 횟수 텍스트뷰
@@ -44,15 +46,17 @@ public class ApproveOrderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_approve_order,container,false);
         user = FirebaseAuth.getInstance().getCurrentUser();
-        SharedPreferences storeAccountData = getActivity().getSharedPreferences(user.getUid(),getActivity().MODE_PRIVATE);
-        Gson gson = new GsonBuilder().create();
-        String data = storeAccountData.getString("StoreAccount","");
-        if(!(data.equals("") || data == null)){
-            myAccount = gson.fromJson(data,StoreAccount.class);
-            orderHistoryDatabase =  FirebaseDatabase.getInstance().getReference("FoodTruck").child("OrderHistory");
-            orderHistoryList = new ArrayList<Order_history>();
-            orderCount = rootView.findViewById(R.id.fragment_approve_order_order_count);
-            setRecycleView(rootView);
+        if (getActivity() != null) {
+            SharedPreferences storeAccountData = getActivity().getSharedPreferences(user.getUid(),getActivity().MODE_PRIVATE);
+            Gson gson = new GsonBuilder().create();
+            String data = storeAccountData.getString("StoreAccount","");
+            if(!(data.equals("") || data == null)){
+                myAccount = gson.fromJson(data,StoreAccount.class);
+                orderHistoryDatabase =  FirebaseDatabase.getInstance().getReference("FoodTruck").child("OrderHistory");
+                orderHistoryList = new ArrayList<Order_history>();
+                orderCount = rootView.findViewById(R.id.fragment_approve_order_order_count);
+                setRecycleView(rootView);
+            }
         }
         return rootView;
     }
@@ -81,9 +85,18 @@ public class ApproveOrderFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.e("ApproveOrder", "DB Error: " + error.getMessage());
             }
         });
         recyclerView.setAdapter(orderApproveListAdapter);
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (query != null && orderListener != null) {
+            query.removeEventListener(orderListener);
+            Lod.d("ApproveOrder", "Listener removed to prevent memory leak");
+        }   
+    }      
 }
