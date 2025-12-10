@@ -22,7 +22,7 @@ import java.util.HashMap;
 public class OrderApproveListAdapter extends RecyclerView.Adapter<OrderApproveListAdapter.ViewHolder>{
 
     //order_history 객체 저장 리스트
-    private ArrayList<Order_history> items;
+    private ArrayList<Order_history> items = new ArrayList<>();
 
 
     @Override
