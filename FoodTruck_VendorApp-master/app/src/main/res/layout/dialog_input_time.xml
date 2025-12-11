@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@android:color/white"> <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="예상 조리 시간을 입력해주세요"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/et_cooking_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="예: 15 (분 단위)"
+        android:inputType="number" 
+        android:background="@android:drawable/editbox_background_normal"/>
+
+    <Button
+        android:id="@+id/btn_confirm_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="고객에게 알림 보내기"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/teal_200"/>
+
+</LinearLayout>
