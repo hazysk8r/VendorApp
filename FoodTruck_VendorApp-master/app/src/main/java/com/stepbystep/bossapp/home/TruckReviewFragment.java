@@ -82,70 +82,86 @@ public class TruckReviewFragment extends Fragment {
         star5=view.findViewById(R.id.pb5);
 
 
-        getRating();
-        getComment();
+        loadReviews();//Rating과 Comment를 통합하여 한 번만 호출하도록
 
         return view;
     }
 
-    private void getRating() { //별점 받아와서 데이터 기반으로 progressbar와 평균 계산
-
+    private void loadReviews() {
+        // TruckId에 해당하는 리뷰를 한 번만 요청
         review_database.orderByChild("truckId").equalTo(truckId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int sum =0;
-                float[] pb = {0,0,0,0,0};
-                for(DataSnapshot unit : snapshot.getChildren()){
-                    ratesList.add(unit.getValue(Review.class));
-                }
-                int quantity = ratesList.size();
-                for (Review item: ratesList) {
-                    sum += Float.parseFloat(item.getRate());
-                    switch (item.getRate()){
-                        case "1": case "1.0": case "1.5":
-                            pb[0] += 1;
-                            break;
-                        case "2": case "2.0": case "2.5":
-                            pb[1] += 1;
-                            break;
-                        case "3": case "3.0": case "3.5":
-                            pb[2] += 1;
-                            break;
-                        case "4": case "4.0": case "4.5":
-                            pb[3] += 1;
-                            break;
-                        case "5": case "5.0":
-                            pb[4] += 1;
-                            break;
+                // 1. 리스트 초기화 (중복 방지)
+                ratesList.clear();
+                commentList.clear();
+
+                // 2. 평점 집계용 변수
+                float sum = 0;
+                int[] starCounts = {0, 0, 0, 0, 0}; // 1~5점 카운트
+
+                // 3. 데이터 파싱
+                for (DataSnapshot unit : snapshot.getChildren()) {
+                    Review review = unit.getValue(Review.class);
+                    if (review != null) {
+                        ratesList.add(review);
+                        commentList.add(review); // 
+
+                        // 평점 계산 로직 개선 (String -> Float)
+                        try {
+                            float rate = Float.parseFloat(review.getRate());
+                            sum += rate;
+
+                            // 평점 분포 계산 (1점대, 2점대... 5점)
+                            int starIndex = (int) Math.floor(rate) - 1; 
+                            if (starIndex >= 0 && starIndex < 5) {
+                                starCounts[starIndex]++;
+                            } else if (starIndex == 4 || rate == 5.0) { // 5.0 처리
+                                starCounts[4]++;
+                            }
+                        } catch (NumberFormatException e) {
+                            // 평점 데이터 오류 시 처리
+                        }
                     }
                 }
-                float ave = (float)sum/quantity;
-                DecimalFormat df = new DecimalFormat("#.#");
-                df.format(ave);
 
-                quantityRating.setText(String.valueOf(quantity));
-                if(quantity==0){
-                    ratingNum.setText("5");
-                    ratingBar.setRating(5);
-                }
-                else {
-                    ave = (float) (Math.ceil(ave*10)/10.0);
-                    ratingNum.setText(String.valueOf(ave));
-                    ratingBar.setRating(ave);
-                }
-                for (int i = 0; i<5;i++ ){
-                    pb[i] = (pb[i]/quantity)*100;
-                }
-                star1.setProgress((int) pb[0]);
-                star2.setProgress((int) pb[1]);
-                star3.setProgress((int) pb[2]);
-                star4.setProgress((int) pb[3]);
-                star5.setProgress((int) pb[4]);
+                // 4. UI 업데이트 (평점 정보)
+                updateRatingUI(ratesList.size(), sum, starCounts);
+
+                // 5. 리사이클러뷰 갱신
+                reviewAdapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "리뷰를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void updateRatingUI(int quantity, float sum, int[] starCounts) {
+        quantityRating.setText(String.valueOf(quantity));
+
+        if (quantity == 0) {
+            ratingNum.setText("0.0");
+            ratingBar.setRating(0);
+            star1.setProgress(0); star2.setProgress(0); star3.setProgress(0);
+            star4.setProgress(0); star5.setProgress(0);
+        } else {
+            float average = sum / quantity;
+            // 소수점 한 자리 반올림
+            average = (float) (Math.round(average * 10) / 10.0);
+            
+            ratingNum.setText(String.valueOf(average));
+            ratingBar.setRating(average);
+
+            // ProgressBar 비율 설정
+            star1.setProgress((starCounts[0] * 100) / quantity);
+            star2.setProgress((starCounts[1] * 100) / quantity);
+            star3.setProgress((starCounts[2] * 100) / quantity);
+            star4.setProgress((starCounts[3] * 100) / quantity);
+            star5.setProgress((starCounts[4] * 100) / quantity);
+        }
     }
 
     private void getComment() { // Comment 및 유저이름 받아오기
